@@ -15,7 +15,8 @@ from everest import RosManager
 
 BTN_SELECT_TOPIC_ID_PREFIX = "btn_select_topic_"
 DROPDOWN_TOPIC_ID_PREFIX = "dropdown_topic_"
-CHECKBOX_TOPIC_ID_PREFIX = "checkbox_topic_"
+CHECKBOX_BOOL_VALUE_ID_PREFIX = "checkbox_bool_value_topic_"
+CHECKBOX_PUB_CONTINUOS_ID_PREFIX = "checkbox_topic_"
 update_topic_callback_chain = []
 
 class MainPage(Widget):
@@ -46,7 +47,7 @@ class MainPage(Widget):
 
         # btn select topic
 
-        grid = GridLayout(cols= 4, rows=1, size=(1000, 100), spacing=10)
+        grid = GridLayout(cols= 6, rows=1, size=(1000, 100), spacing=10)
         btn_select_topic_id = f"{BTN_SELECT_TOPIC_ID_PREFIX}{self.topic_container_id_counter}"
      
         btn = Button(
@@ -66,19 +67,33 @@ class MainPage(Widget):
         grid.ids[btn_select_topic_id] = btn
         grid.add_widget(btn)
 
-        # btn update topics
+        # bind update topics
         
         update_topic_callback_chain.append(dropdown.update)
 
+        # label checkbox
+
+        grid.add_widget(Label(text= "Value:"))
+
         # checkbox
         checkbox = CheckBox()
-        checkbox_topic_id = f"{CHECKBOX_TOPIC_ID_PREFIX}{self.topic_container_id_counter}"
+        checkbox_topic_id = f"{CHECKBOX_BOOL_VALUE_ID_PREFIX}{self.topic_container_id_counter}"
         grid.ids[checkbox_topic_id] = checkbox
         grid.add_widget(checkbox)
 
+        # label checkbox pub continuos
+
+        grid.add_widget(Label(text= "Pub continuos:"))
+
+        # checkbox pub continuos
+        checkbox_pub_continuous = CheckBox()
+        checkbox_pub_continuous_id = f"{CHECKBOX_PUB_CONTINUOS_ID_PREFIX}{self.topic_container_id_counter}"
+        grid.ids[checkbox_pub_continuous_id] = checkbox_pub_continuous
+        grid.add_widget(checkbox_pub_continuous)
+
         # btn pub
         btn_pub = Button(text= "Pub", on_release= lambda grid: 
-                        dropdown.pub(btn.text, checkbox.active))
+                        dropdown.pub(btn.text, checkbox.active, checkbox_pub_continuous.active, self.topic_container_id_counter))
         grid.add_widget(btn_pub)
         # btn_select_topic_id = f"{BTN_SELECT_TOPIC_ID_PREFIX}{topic_container_id_counter}"
      
@@ -129,11 +144,12 @@ class TopicDropdown(DropDown):
             
         # self.bind(on_select= lambda instance, x: setattr(btn_select_item, 'text', x))
 
-    def pub(self, topic, value):
+    def pub(self, topic, value, pub_continuous, publisher_id):
 
         print(f"topic: {topic}")
         print(f"value: {value}")
-        self.ros_manager.pub_bool(topic, value)
+        print(f"publisher_id: {publisher_id}")
+        self.ros_manager.pub_bool(topic, value, pub_continuous, publisher_id)
 
 
 class ButtonSelectTopic(Widget):
