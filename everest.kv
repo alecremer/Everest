@@ -1,0 +1,60 @@
+#:kivy 1.4
+
+<TopicDropdown>:
+
+<ButtonSelectTopic>:
+    
+<TopicContainer>:
+    # Button:
+    #     id: btn
+    #     text: "Select topic"
+    #     size_hint: 4, 1
+    #     TopicDropdown:
+    #         id: dropdown
+    #         size_hint: 0.5, 1
+
+    #     Button:
+    #         text: "Update topics"
+    #         on_release: dropdown.update(btn) 
+
+    #     CheckBox:
+    #         id: topic_value
+
+
+    #     Button:
+    #         text: "Pub"
+    #         on_release: dropdown.pub(btn.text ,topic_value.active)         
+    #     Button:
+    #         text: "Add"
+    #         on_release: root.add_topic_container()         
+
+
+<MainPage>:
+    # dropdown: dropdown
+    # btn: btn
+    topic_container: topic_container
+    
+
+    GridLayout:
+        id: topic_container
+        top: root.top + root.grid_top
+        cols: 1
+        rows: root.rows
+        size: 1000 , root.topic_grid_h
+        # BoxLayout:
+        #     orientation: 'horizontal'
+        #     size_hint: 1, .5
+        padding: 20
+        spacing: 10
+        GridLayout:
+            cols: 2
+            Button:
+                text: "Update topics"
+                on_release: root.update_topic_list()
+                
+            Button:
+                text: "Add"
+                on_release: root.add_topic_container()
+                
+
+        
