@@ -92,8 +92,15 @@ class MainPage(Widget):
         grid.add_widget(checkbox_pub_continuous)
 
         # btn pub
-        btn_pub = Button(text= "Pub", on_release= lambda grid: 
-                        dropdown.pub(btn.text, checkbox.active, checkbox_pub_continuous.active, self.topic_container_id_counter))
+        def pub_function(btn, btn_pub, checkbox, topic_container_id_counter):
+            dropdown.pub(btn.text, checkbox.active, checkbox_pub_continuous.active, topic_container_id_counter)
+            if btn_pub.text == "Pub" and checkbox_pub_continuous.active: 
+                btn_pub.text = "Publishing"
+            elif btn_pub.text == "Publishing" and checkbox_pub_continuous.active:
+                btn_pub.text = "Pub"
+
+        btn_pub = Button(text= "Pub")
+        btn_pub.on_release= lambda : pub_function(btn, btn_pub, checkbox, self.topic_container_id_counter)
         grid.add_widget(btn_pub)
         # btn_select_topic_id = f"{BTN_SELECT_TOPIC_ID_PREFIX}{topic_container_id_counter}"
      
